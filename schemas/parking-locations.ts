@@ -36,5 +36,5 @@ const ParkingLocationSchema = new Schema<ParkingLocation>({
 }, {
     timestamps: true
 })
-
+ParkingLocationSchema.index({ location: '2dsphere' });
 export const ParkingLocationModel = models.ParkingLocation || model('ParkingLocation', ParkingLocationSchema)
