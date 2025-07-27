@@ -38,9 +38,9 @@ async function MyBookingsPage() {
                             <div className="flex flex-col space-y-1 items-start">
                                 <p className="text-sm text-slate-400">{booking.status}</p>
                                 <p className="text-xl font-bole">
-                                    {booking.locationid?.address
-                    ? getStreetFromAddress(booking.locationid.address)
-                    : "Location not available"}
+                                   {'address' in booking.locationid
+    ? getStreetFromAddress((booking.locationid as any).address)
+    : "Location not available"}
 {/*                                     {getStreetFromAddress(((booking.locationid as unknown) as ParkingLocation).address)} */}
                                 </p>
                                 <p className="text-sm">{format(booking.bookingdate, 'MMM, dd yyy')}</p>
