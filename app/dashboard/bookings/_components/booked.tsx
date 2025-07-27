@@ -31,7 +31,43 @@ function Booked({ date, locationid }: {
       })()
     }
   }, [date, locationid])
+ function convertToCSV(data: Booking[]) {
+    const headers = [
+      "User",
+      "Plate",
+      "Start Time",
+      "End Time",
+      "Duration (mins)",
+    ];
+    const rows = data.map((booking) => {
+      const duration = Math.round(
+        (new Date(booking.endtime).getTime() -
+          new Date(booking.starttime).getTime()) /
+          60000
+      );
+      return [
+        booking.userid ?? "N/A",
+        booking.plate ?? "N/A",
+        format(new Date(booking.starttime), "HH:mm"),
+        format(new Date(booking.endtime), "HH:mm"),
+        duration.toString(),
+      ];
+    });
 
+    return [headers, ...rows].map((row) => row.join(",")).join("\n");
+  }
+
+  function downloadCSV(data: Booking[]) {
+    const csv = convertToCSV(data);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "bookings.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
   return (
     <>
       {
@@ -126,7 +162,14 @@ function Booked({ date, locationid }: {
         )
 
       }
-
+<div className="flex justify-end mt-2">
+        <button
+          onClick={() => downloadCSV(bookings)}
+          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+        >
+          Export as CSV
+        </button>
+      </div>
     </>
   )
 }
