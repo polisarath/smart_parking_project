@@ -37,12 +37,12 @@ async function MyBookingsPage() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 p-2 items-center">
                             <div className="flex flex-col space-y-1 items-start">
                                 <p className="text-sm text-slate-400">{booking.status}</p>
-                                <p className="text-xl font-bole">
-                                   {'address' in booking.locationid
-    ? getStreetFromAddress((booking.locationid as any).address)
+                               <p className="text-xl font-bold">
+  {booking.locationid && typeof booking.locationid === 'object' && 'address' in booking.locationid
+    ? getStreetFromAddress((booking.locationid as ParkingLocation).address)
     : "Location not available"}
-{/*                                     {getStreetFromAddress(((booking.locationid as unknown) as ParkingLocation).address)} */}
-                                </p>
+</p>
+
                                 <p className="text-sm">{format(booking.bookingdate, 'MMM, dd yyy')}</p>
                                 <p className='text-sm'>
                                 {format(booking.starttime, 'hh:mm a')} - {format(booking.endtime, 'hh:mm a')}</p>
