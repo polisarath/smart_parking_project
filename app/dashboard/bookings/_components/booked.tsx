@@ -8,7 +8,7 @@ import { format } from "date-fns";
 import { Loader } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { startOfDay } from "date-fns";
-import { getClerkUserInfo } from "@/lib/clerk";
+
 
 function Booked({ date, locationid }: { date: Date; locationid: string }) {
   const [bookings, setBookings] = useState<Booking[]>([]);
