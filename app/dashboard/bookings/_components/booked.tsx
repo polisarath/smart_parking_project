@@ -7,8 +7,7 @@ import { BookingStatus } from "@/types";
 import { format } from "date-fns";
 import { Loader } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { startOfDay } from "date-fns";
-import { getClerkUserInfo } from "@/lib/clerk";
+import { startOfDay } from "date-fns";import { getClerkUserInfo } from "@/lib/clerk";
 
 function Booked({ date, locationid }: { date: Date; locationid: string }) {
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -21,7 +20,8 @@ function Booked({ date, locationid }: { date: Date; locationid: string }) {
       (async () => {
         setLoading(true)
 
-        const result = await getBookings(startOfDay(date), locationid, BookingStatus.BOOKED)
+       // const result = await getBookings(startOfDay(date), locationid, BookingStatus.BOOKED)
+         const result = await getBookings(date, locationid, BookingStatus.BOOKED)
         console.log("getBookings result:", result);
         setBookings(result.data as Booking[])
         setLoading(false)
@@ -67,16 +67,6 @@ function Booked({ date, locationid }: { date: Date; locationid: string }) {
     link.click();
     document.body.removeChild(link);
   }
-async function getClerkUserInfo(userId: string) {
-  try {
-    const res = await fetch(`/api/user/${userId}`);
-    if (!res.ok) throw new Error('Failed to fetch user');
-    return await res.json();
-  } catch (err) {
-    console.error(err);
-    return { name: 'N/A', email: 'N/A' };
-  }
-}
 
   return (
     <>
