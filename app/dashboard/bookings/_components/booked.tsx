@@ -19,9 +19,10 @@ function Booked({ date, locationid }: { date: Date; locationid: string }) {
 
       (async () => {
         setLoading(true)
+const result = await getBookings(startOfDay(new Date()), locationid, BookingStatus.BOOKED);
 
        // const result = await getBookings(startOfDay(date), locationid, BookingStatus.BOOKED)
-         const result = await getBookings(date, locationid, BookingStatus.BOOKED)
+        // const result = await getBookings(date, locationid, BookingStatus.BOOKED)
         console.log("getBookings result:", result);
         setBookings(result.data as Booking[])
         setLoading(false)
