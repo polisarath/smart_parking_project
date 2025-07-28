@@ -20,6 +20,11 @@ import { compareAsc, format, formatDate } from "date-fns";
 import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
 
+
+
+
+
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function toggleLocation({
@@ -414,6 +419,7 @@ export async function getBookings(
       .populate({
         path: "locationid",
         model: ParkingLocationModel,
+        
       })
       .lean();
 
@@ -426,6 +432,7 @@ export async function getBookings(
     throw error;
   }
 }
+
 
 export async function deleteBooking(bookingid: string) {
   try {
