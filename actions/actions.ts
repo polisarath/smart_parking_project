@@ -19,12 +19,6 @@ import { currentUser } from "@clerk/nextjs/server";
 import { compareAsc, format, formatDate } from "date-fns";
 import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
-import { utcToZonedTime, zonedTimeToUtc, startOfDay } from "date-fns-tz";
-import { utcToZonedTime, startOfDay } from "date-fns-tz";
-import { format } from "date-fns";
-
-const istDate = utcToZonedTime(date, 'Asia/Kolkata');
-const normalizedDate = startOfDay(istDate); // use this
 
 
 
@@ -400,20 +394,12 @@ export async function updateBooking(
   }
 }
 
-import { utcToZonedTime, startOfDay } from "date-fns-tz";
-import { format } from "date-fns";
-
 export async function getBookings(
   date: Date,
   locationid: string,
   status: BookingStatus
 ) {
   try {
-    // Convert frontend date to start of day in IST to match $dateToString in MongoDB
-    const istDate = utcToZonedTime(date, "Asia/Kolkata");
-    const normalizedDate = startOfDay(istDate);
-    const formattedDate = format(normalizedDate, "yyyy-MM-dd");
-
     const bookings = await BookingModel.find({
       status: status || BookingStatus.BOOKED,
       locationid: locationid,
@@ -423,16 +409,17 @@ export async function getBookings(
             $dateToString: {
               format: "%Y-%m-%d",
               date: "$bookingdate",
-              timezone: "+05:30",
+              timezone: "+05:30", // added timezone
             },
           },
-          formattedDate,
+          format(date, "yyyy-MM-dd"),
         ],
       },
     })
       .populate({
         path: "locationid",
         model: ParkingLocationModel,
+        
       })
       .lean();
 
